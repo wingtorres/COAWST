@@ -577,6 +577,11 @@
       cad=LEN_TRIM(to_add)
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
+	  
+	  to_add=':FWC'
+	  cad=LEN_TRIM(to_add)
+	  write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
+	  cid=cid+cad
 #if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
       to_add=':VEGDENS'
@@ -1191,7 +1196,7 @@
       integer :: WHICHWAY, GDEST, GSRC, TAGT, TAGB, TAGR, TAGL
       integer :: TREQUEST,BREQUEST,RREQUEST,LREQUEST,MSIZE
       integer :: iddep, idwlv, idvlx, idvly, idveg
-      integer :: idruf, idice
+      integer :: idruf, idice, idfwc
       integer, dimension(MPI_STATUS_SIZE,4) :: status
 
       real :: cff
@@ -1303,6 +1308,8 @@
         IP=IP+1
         idruf=IP
 !
+        IP=IP+1
+        idfwc=IP
 #  if defined VEGETATION && defined VEG_SWAN_COUPLING
         IP=IP+1
         idveg=IP
@@ -1449,6 +1456,34 @@
           write(SCREEN,40) 'ROMStoSWAN Min/Max ZO      (m):      ',    &
      &                      range(1),range(2)
         END IF
+
+!
+! Wave friction factor enhanced by currents
+!
+        CALL AttrVect_exportRAttr(AttrVect_G(ng)%ocn2wav_AV,           &
+     &                            "FWC",avdata,gsmsize)
+        range(1)= Large
+        range(2)=-Large
+        IP=0
+        DO IY=Jstr,Jend
+          DO IX=Istr,Iend
+            IP=IP+1
+            INDXG=(IY-1)*MXC+IX
+            TEMPMCT(INDXG,idfwc)=avdata(IP)
+            range(1)=MIN(range(1),REAL(avdata(IP)))
+            range(2)=MAX(range(2),REAL(avdata(IP)))
+          END DO
+          IF (KREPTX.EQ.1) THEN
+            IP=IP+1
+          END IF
+        END DO
+        CALL SWREDUCE(range(1),1,SWREAL,SWMIN)
+        CALL SWREDUCE(range(2),1,SWREAL,SWMAX)
+        IF (MyRank.eq.0) THEN
+          write(SCREEN,40) 'ROMStoSWAN Min/Max FWC      :      ',    &
+     &                      range(1),range(2)
+        END IF
+
 #  if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
 !  Vegetation density.
