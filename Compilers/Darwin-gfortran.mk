@@ -127,8 +127,9 @@ endif
 
 ifdef USE_NETCDF4
         NF_CONFIG ?= nf-config
-    NETCDF_INCDIR ?= $(shell $(NF_CONFIG) --prefix)/include
-             LIBS += $(shell $(NF_CONFIG) --flibs)
+		NC_CONFIG ?= nc-config
+    NETCDF_INCDIR ?= $(shell $(NC_CONFIG) --prefix)/include
+             LIBS += $(shell $(NF_CONFIG) --flibs) -lnetcdf -lnetcdff
            INCDIR += $(NETCDF_INCDIR) $(INCDIR)
 else
     NETCDF_INCDIR ?= /opt/gfortransoft/serial/netcdf3/include
