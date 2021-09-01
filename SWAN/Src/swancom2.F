@@ -29,7 +29,7 @@
      &                 IMATDA  ,KWAVE   ,SPCSIG  ,UBOT    ,UX2     ,      30.72
      &                 UY2     ,IDCMIN  ,IDCMAX  ,IT      ,ITER    ,      41.51
      &                 SWPDIR  ,PLBTFR  ,ISSTOP  ,DISSC1  ,VARFR   ,      41.51 40.67
-     &                 FRCOEF  )
+     &                 FRCOEF, FWC )
 !
 !****************************************************************
 !
@@ -317,7 +317,8 @@
      &         UX2(MCGRD)                ,
      &         UY2(MCGRD)                ,
      &         DISSC1(MDC,MSC,1:MDISP)   ,                                40.67
-     &         FRCOEF(MCGRD)                                              20.68
+     &         FRCOEF(MCGRD)             ,                                20.68
+     &         FWC(MCGRD)          
 !
       INTEGER  IDCMIN(MSC)               ,
      &         IDCMAX(MSC)
@@ -385,6 +386,14 @@
             FW = 0.3
           ENDIF
           CFBOT =  UBOT(KCGRD(1)) * FW / (SQRT(2.) * GRAV)
+
+        IF ( IBOT.EQ.6 ) THEN
+
+            *** MADSEN 1994 model, computed in ROMS then passed to SWAN ***
+            FW = FWC(KCGRD(1))
+        ENDIF
+        CFBOT = UBOT(KCGRD(1))*FW / (SQRT(2.) * GRAV)
+        
         ELSEIF ( IBOT.EQ.4 ) THEN
 !
 !            *** Jonswap model with variable friction coefficient  ***
