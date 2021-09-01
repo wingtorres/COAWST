@@ -438,6 +438,11 @@
       cad=LEN_TRIM(to_add)
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
+
+      to_add=':FWC'
+      cad=LEN_TRIM(to_add)
+      write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
+      cid=cid+cad
 #if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
       to_add=':VEGDENS'
@@ -890,6 +895,24 @@
         END DO
       END DO
       CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "ZO",       &
+     &                           A, Asize)
+!
+!  current-enhanced wave friction factor
+!
+      ij=0
+      DO j=JstrR,JendR
+        DO i=IstrR,IendR
+          ij=ij+1
+#ifdef BBL_MODEL
+          A(ij)=SEDBED(ng)%bottom(i,j,ifwc)
+#else
+!               This value will be replaced by a SWAN friction routine
+!               See SWAN/Src/waves_coupler.F.
+          A(ij)=0.001_r8
+#endif
+        END DO
+      END DO
+      CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "FWC",       &
      &                           A, Asize)
 #if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
