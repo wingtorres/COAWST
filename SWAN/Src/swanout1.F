@@ -3684,7 +3684,7 @@
 !              interpolation done in all active and non-active points
                RTMP=DEPMIN
                DEPMIN=-10.*ABS(MINVAL(COMPDA(:,JDP2)))
-               CALL SWIPOL(COMPDA(1,JFRC2),OVEXCV(27),XC,YC, MIP, CROSS,  40.86
+               CALL SWIPOL(COMPDA(1,JFWC),OVEXCV(27),XC,YC, MIP, CROSS,  40.86
      &                     VOQ(1,VOQR(27)) ,KGRPNT, COMPDA(1,JDP2))
                DEPMIN=RTMP
             ELSE                                                          40.80
@@ -3693,7 +3693,7 @@
                LTMP(:) = vert(:)%active                                   40.91
                vert(:)%active = .TRUE.                                    40.91
                CALL SwanInterpolateOutput ( VOQ(1,VOQR(27)), VOQ(1,1),    40.80
-     &                                      VOQ(1,2), COMPDA(1,JFRC2),    40.80
+     &                                      VOQ(1,2), COMPDA(1,JFWC),    40.80
      &                                      MIP, KVERT, OVEXCV(27) )      40.80
                vert(:)%active = LTMP(:)                                   40.91
                DEALLOCATE(LTMP)                                           40.91
