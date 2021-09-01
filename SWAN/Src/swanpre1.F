@@ -1401,9 +1401,10 @@
           CALL SINPGR (IGRD, IGR2, PSNAME, ng)
           IGR1   = 4
           VARFR  = .TRUE.
-          MCMVAR = MCMVAR + 2                                               40.00
-          JFRC2  = MCMVAR - 1                                               40.00
-          JFRC3  = MCMVAR                                                   40.00
+          MCMVAR = MCMVAR + 3                                               40.00
+          JFRC2  = MCMVAR - 2                                               40.00
+          JFRC3  = MCMVAR - 1                                               40.00
+          JFWC   = MCMVAR
           ALLOCATE (M_GENARR_MOD(ng)%FRIC_G(MXG(IGR1)*MYG(IGR1)))           40.31
           FRIC=>M_GENARR_MOD(ng)%FRIC_G
           FRIC=0.0001
