@@ -389,7 +389,8 @@
 !
 ! Use the original coded ssw_logint formulation
 !
-          cff1=sg_z1min
+!          cff1=sg_z1min
+          cff1=MIN(0.9_r8*Dstp, MAX(Zr(i,j), sg_z1min))
 !         cff1=sg_zwbl(ng)
 # endif
 !
@@ -624,11 +625,13 @@
 !  Waves and currents, but zr <= zo.
 !
             IF (Master) THEN
-              PRINT *,' Warning: w-c calcs ignored because zr <= zo'
+              PRINT *,' Warning: zr <= zo'
             END IF
-!         ELSE IF ((Umag(i,j).gt.0.0_r8).and.(Ub(i,j).gt.eps).and.      &
-          ELSE IF ((Umag(i,j).gt.eps).and.(Ub(i,j).ge.eps).and.      &
-     &             ((Zr(i,j)/zo).gt.1.0_r8)) THEN
+         ELSE IF ((Umag(i,j).gt.0.0_r8).and.(Ub(i,j).gt.eps) !.and.      &
+
+!          ELSE IF ((Umag(i,j).gt.eps).and.(Ub(i,j).ge.eps)).and.      &
+!     &             ((Zr(i,j)/zo).gt.1.0_r8)) THEN
+
 !
 !  Waves and currents, zr > zo.
 !
@@ -730,6 +733,7 @@
      &                     m_zr, m_phicw, m_kb, Dstp,                   &
      &                     m_ustrc, m_ustrwm, m_ustrr, m_fwc, m_zoa,    &
      &                     m_dwc)
+	         bottom(i,j,ifwc)=m_fwc
             Tauc(i,j)=m_ustrc*m_ustrc
             Tauw(i,j)=m_ustrwm*m_ustrwm
             Taucwmax(i,j)=m_ustrr*m_ustrr
