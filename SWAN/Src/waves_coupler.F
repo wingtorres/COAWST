@@ -1784,6 +1784,8 @@
           cff2=PBOT(2)
         ELSE IF (IBOT.EQ.3) THEN      ! Madsen
           cff2=PBOT(5)
+		ELSE IF (IBOT.EQ.6) THEN      ! Madsen 1994
+		  cff2=0.001
         END IF
 # endif
         IP=0
@@ -1800,6 +1802,15 @@
                 COMPDA(INDX,JFRC2)=COMPDA(INDX,JFRC2)+                  &
      &                             MAX(REAL(TEMPMCT(IP,idruf)), 0.0001)
               END IF
+#   ifdef SSW_BBL
+              IF (io.eq.1) THEN
+                COMPDA(INDX,JFWC)=MAX(REAL(TEMPMCT(IP,idfwc)), 0.0001)
+              ELSE
+                COMPDA(INDX,JFWC)=COMPDA(INDX,JFWC)+                  &
+     &                             MAX(REAL(TEMPMCT(IP,idfwc)), 0.0001)
+              END IF
+#   else
+              COMPDA(INDX,JFWC)=cff2
 #  else
               COMPDA(INDX,JFRC2)=cff2
 #  endif
