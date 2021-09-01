@@ -62,6 +62,10 @@
               CASE ('idSbed(ibtcr)')
                 idSbed(ibtcr)=varid
 #endif
+#ifdef SSW_BBL
+              CASE ('idBott(ifwc)')
+                idBott(ifwc)=varid
+#endif
               CASE ('idBott(isd50)')
                 idBott(isd50)=varid
               CASE ('idBott(idens)')
