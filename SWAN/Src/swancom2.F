@@ -389,7 +389,8 @@
 
         IF ( IBOT.EQ.6 ) THEN
 
-            *** MADSEN 1994 model, computed in ROMS then passed to SWAN ***
+!            *** Madsen 1994 model ***
+!            *** f_wc computed in ROMS then passed to SWAN ***
             FW = FWC(KCGRD(1))
         ENDIF
         CFBOT = UBOT(KCGRD(1))*FW / (SQRT(2.) * GRAV)

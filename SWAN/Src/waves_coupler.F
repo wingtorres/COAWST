@@ -577,11 +577,13 @@
       cad=LEN_TRIM(to_add)
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
-	  
-	  to_add=':FWC'
-	  cad=LEN_TRIM(to_add)
-	  write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
-	  cid=cid+cad
+      
+#ifdef SSW_BBL
+      to_add=':FWC'
+      cad=LEN_TRIM(to_add)
+      write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
+      cid=cid+cad
+#endif
 #if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
       to_add=':VEGDENS'
@@ -1307,9 +1309,10 @@
 !
         IP=IP+1
         idruf=IP
-!
+#ifdef SSW_BBL
         IP=IP+1
         idfwc=IP
+#endif
 #  if defined VEGETATION && defined VEG_SWAN_COUPLING
         IP=IP+1
         idveg=IP
@@ -1784,8 +1787,8 @@
           cff2=PBOT(2)
         ELSE IF (IBOT.EQ.3) THEN      ! Madsen
           cff2=PBOT(5)
-		ELSE IF (IBOT.EQ.6) THEN      ! Madsen 1994
-		  cff2=0.001
+        ELSE IF (IBOT.EQ.6) THEN      ! Madsen 1994
+          cff2=0.001
         END IF
 # endif
         IP=0
@@ -1803,14 +1806,10 @@
      &                             MAX(REAL(TEMPMCT(IP,idruf)), 0.0001)
               END IF
 #   ifdef SSW_BBL
-              IF (io.eq.1) THEN
-                COMPDA(INDX,JFWC)=MAX(REAL(TEMPMCT(IP,idfwc)), 0.0001)
-              ELSE
-                COMPDA(INDX,JFWC)=COMPDA(INDX,JFWC)+                  &
-     &                             MAX(REAL(TEMPMCT(IP,idfwc)), 0.0001)
-              END IF
-#   else
+              COMPDA(INDX,JFWC)=TEMPMCT(IP,idfwc) 
+#   else 
               COMPDA(INDX,JFWC)=cff2
+#   endif
 #  else
               COMPDA(INDX,JFRC2)=cff2
 #  endif

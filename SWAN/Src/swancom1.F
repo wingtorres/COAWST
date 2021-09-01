@@ -3221,9 +3221,9 @@
      &  COMPDA(1,JNPLA2)    ,COMPDA(1,JTURB2)    ,COMPDA(1,JMUDL2)    ,   40.59 40.35 40.55
      &  COMPDA(1,JAICE2)    ,COMPDA(1,JHICE2)    ,                        41.75
      &  COMPDA(1,JURSEL)    ,LSWMAT(1,1,JABIN)   ,REFLSO              ,   40.41 40.03
-     &  COMPDA(1,JTAUW)
-     & ,URMSTOP                                                           40.88
-     &                                                                )   30.21
+     &  COMPDA(1,JTAUW)     ,
+     &  URMSTOP             ,                                             40.88
+     &  COMPDA(1,JFWC)                                                )   30.21
 !TIMG        CALL SWTSTO(117)                                                  40.23
 !
 !       *** compute transport of action and fill the matrix ***
@@ -6611,9 +6611,9 @@
      &                     NPLA2      ,TURBV2     ,MUDL2      ,           40.59 40.35 40.55
      &                     AICE2      ,HICE2      ,                       41.75
      &                     URSELL     ,ANYBIN     ,REFLSO     ,           40.41 40.03
-     &                     TAUWV
-     &                    ,URMSTOP                                        40.88
-     &                                                        )           30.21
+     &                     TAUWV      ,
+     &                     URMSTOP    ,                                   40.88
+     &                     FWC                                )           30.21
 !
 !****************************************************************
 
@@ -7018,6 +7018,7 @@
       REAL, INTENT(IN)  :: HICE2(MCGRD)                                   41.75
       REAL  :: REFLSO(MDC,MSC)                                            40.41
       REAL  :: URMSTOP(MCGRD)                                             40.88
+      REAL  :: FWC(MCGRD)
 !
       INTEGER  IDCMIN(MSC)    ,
      &         IDCMAX(MSC)    ,
@@ -7074,7 +7075,7 @@
      &             IMATDA   ,KWAVE    ,SPCSIG   ,UBOT     ,UX2      ,     30.72
      &             UY2      ,IDCMIN   ,IDCMAX   ,IT       ,ITER     ,     41.51
      &             SWPDIR   ,PLBTFR   ,ISSTOP   ,DISSC1   ,VARFR    ,     41.51 40.67
-     &             FRCOEF   )
+     &             FRCOEF   ,FWC      )
       END IF
 !TIMG      CALL SWTSTO(130)                                                    40.23
 !

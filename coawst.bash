@@ -121,7 +121,7 @@ done
 # Set the CPP option defining the particular application. This will
 # determine the name of the ".h" header file with the application
 # CPP definitions. Also this will activate the switch file for WW3.
-export   COAWST_APPLICATION=INLET_TEST
+export   COAWST_APPLICATION=REEF
 
 # Set the ROMS_APPLICATION to be the same as the COAWST_APP.
 # Do not change this. We use the COAWST APP for other checks.
@@ -129,8 +129,8 @@ export   ROMS_APPLICATION=${COAWST_APPLICATION}
 
 # Set a local environmental variable to define the path to the directories
 # where all this project's files are kept.
-export   MY_ROOT_DIR=/cygdrive/e/data/models/COAWST
-export   MY_PROJECT_DIR=${MY_ROOT_DIR}
+export   MY_ROOT_DIR=/Users/wit/COAWST-wit
+export   MY_PROJECT_DIR=${MY_ROOT_DIR}/Projects/reef
 
 # The path to the user's local current ROMS source code.
 # If using svn locally, this would be the user's Working Copy Path (WCPATH).
@@ -210,7 +210,7 @@ export   NETCDF_CONFIG=/usr/bin/nf-config
 #export        USE_OpenMP=on            # shared-memory parallelism
 
  export              FORT=ifort
-#export              FORT=gfortran
+export              FORT=gfortran
 #export              FORT=pgi
 
  export         USE_DEBUG=              # use Fortran debugging flags
@@ -454,19 +454,19 @@ fi
 
 #  export     MY_HEADER_DIR=${MY_PROJECT_DIR}/ROMS/Include
 #  export MY_ANALYTICAL_DIR=${MY_PROJECT_DIR}/ROMS/Functionals
-   export     MY_HEADER_DIR=${MY_PROJECT_DIR}/Projects/Inlet_test/Coupled
-   export MY_ANALYTICAL_DIR=${MY_PROJECT_DIR}/Projects/Inlet_test/Coupled
+   export     MY_HEADER_DIR=${MY_PROJECT_DIR}
+   export MY_ANALYTICAL_DIR=${MY_PROJECT_DIR}
 
 # Put the binary to execute in the following directory.
 
-# export            BINDIR=${MY_PROJECT_DIR}
-  export            BINDIR=./
+ export            BINDIR=${MY_PROJECT_DIR}
+#  export            BINDIR=./
 
 # Put the f90 files in a project specific Build directory to avoid conflict
 # with other projects.
 
-# export       SCRATCH_DIR=${MY_PROJECT_DIR}/Build
-  export       SCRATCH_DIR=./Build
+ export       SCRATCH_DIR=${MY_PROJECT_DIR}/Build
+#  export       SCRATCH_DIR=./Build
 
 # Go to the users source directory to compile. The options set above will
 # pick up the application-specific code from the appropriate place.

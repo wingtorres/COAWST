@@ -627,11 +627,9 @@
             IF (Master) THEN
               PRINT *,' Warning: zr <= zo'
             END IF
-         ELSE IF ((Umag(i,j).gt.0.0_r8).and.(Ub(i,j).gt.eps) !.and.      &
-
+         ELSE IF ((Umag(i,j).gt.0.0_r8).and.(Ub(i,j).gt.eps)) THEN
 !          ELSE IF ((Umag(i,j).gt.eps).and.(Ub(i,j).ge.eps)).and.      &
 !     &             ((Zr(i,j)/zo).gt.1.0_r8)) THEN
-
 !
 !  Waves and currents, zr > zo.
 !
@@ -995,6 +993,9 @@
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
      &                  bottom(:,:,izwbl))
+!      CALL bc_r2d_tile (ng, tile,                                       &
+!     &                  LBi, UBi, LBj, UBj,                             &
+!     &                  bottom(:,:,ifwc))
 #if defined BEDLOAD_VANDERA_MADSEN
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
@@ -1045,7 +1046,8 @@
      &                    NghostPoints,                                 &
      &                    EWperiodic(ng), NSperiodic(ng),               &
      &                    bottom(:,:,izdef),                            &
-     &                    bottom(:,:,izapp))
+     &                    bottom(:,:,izapp),                            &
+	 &                    bottom(:,:,ifwc))                              
       CALL mp_exchange2d (ng, tile, iNLM, 4,                            &
      &                    LBi, UBi, LBj, UBj,                           &
      &                    NghostPoints,                                 &
