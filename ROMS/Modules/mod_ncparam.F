@@ -1681,8 +1681,8 @@
               idragQ=varid
             CASE ('idZoBL')
               idZoBL=varid
-            CASE ('idFwc')
-              idfwc=varid
+!            CASE ('idFwc')
+!              idfwc=varid
 #endif
 #ifdef UV_WAVEDRAG
             CASE ('idragW')
