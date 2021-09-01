@@ -2123,6 +2123,7 @@
       INTEGER             JDIS1,       JDISS,       JDPSAV,      JDP1
       INTEGER             JDP2
       INTEGER             JDP3,        JDTM,        JFRC2,       JFRC3
+      INTEGER             JFWC
       INTEGER             JGEN0,       JGEN1,       JRED0,       JRED1
       INTEGER             JTRA0,       JTRA1
       INTEGER             JDSXB
