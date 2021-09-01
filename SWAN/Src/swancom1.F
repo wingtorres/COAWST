@@ -252,6 +252,7 @@
 !                       IBOT = 2  Dingemans bottom dissipation model
 !                       IBOT = 3  Madsen bottom dissipation model
 !                       IBOT = 5  bottom dissipation due to ripples
+!                       IBOT = 6  Madsen 1994 bottom dissipation model from ROMS
 !     ICUR              Indicator for current
 !     ISURF             Indicator for wave breaking
 !     ITRIAD            Indicator for nonlinear triad interactions
