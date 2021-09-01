@@ -2678,6 +2678,10 @@
           JFRC2  = MCMVAR+1
           MCMVAR = MCMVAR+1
           ALOCMP = .TRUE.
+		ELSE IF (KEYWIS('M94')) THEN
+		  IBOT = 6
+		  FWC = MCMVAR + 1
+		  ALOCMP = .TRUE.
         ELSE
           CALL WRNKEY
         ENDIF
