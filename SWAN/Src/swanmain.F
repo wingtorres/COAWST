@@ -2870,6 +2870,7 @@
 !     subarray sequence number 1 is used only for unused subarrays        40.13
       JFRC2 = 1                                                           40.00
       JFRC3 = 1                                                           40.00
+      JFWC = 1
       JUSTAR= 1                                                           30.22
       JZEL  = 1                                                           30.22
       JTAUW = 1                                                           30.22
@@ -5890,6 +5891,7 @@
       IF (VARFR) THEN
         COMPDA(1,JFRC2) = 0.                                              40.00
         COMPDA(1,JFRC3) = 0.                                              40.00
+        COMPDA(1,JFWC) = 0.
       ELSEIF (JFRC2.GT.1) THEN                                            41.51
         COMPDA(1,JFRC2) = 0.                                              41.51
       ENDIF
@@ -6013,6 +6015,7 @@
              FRI = SVALQI (XP, YP, 4, FRIC, 1 ,IX ,IY)                    40.31 30.90
              COMPDA(INDX,JFRC2) = FRI                                     40.00
              COMPDA(INDX,JFRC3) = FRI                                     40.00
+             COMPDA(INDX,JFWC) = FRI
           ENDIF
 !
 !         ***** compute variable wind velocity *****
