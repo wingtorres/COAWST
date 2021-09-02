@@ -1589,7 +1589,8 @@
       ustrwm=dval
       ustrr=dval
 # ifdef CRS_FIX
-      kN=MIN(kN,0.9_r8*zr)
+!      kN=MIN(kN,0.9_r8*zr)
+      KN=MIN(kN,0.9_r8*Dstp) !limit by depth not ref height
 # endif
       zoa=kN/30.0_r8
       phicwc=phiwc
@@ -1625,12 +1626,26 @@
 !
 ! New fwc CRS calculation
 !
-      fwci(1)=Cmu(1)*0.3_r8
-      IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+
+!      fwci(1)=Cmu(1)*0.3_r8
+!      IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+!        fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+!      ELSE IF (cukw.gt.100.0_r8) THEN
+!        fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
+!      END IF
+
+!
+! WIT fwc calculation
+!
+
+      IF (cukw.le.0.01_r8)) THEN
+         fwci(1)=Cmu(1)*EXP(7.02_r8*(0.01_r8)**(-0.078_r8)-8.82_r8)
+      IF ((cukw.gt.0.01_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
         fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
       ELSE IF (cukw.gt.100.0_r8) THEN
         fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
       END IF
+      
 # else
 !
 ! Original method fwc calculation
@@ -1652,7 +1667,7 @@
       IF (cukw.ge.8.0_r8) THEN
         dwc(1)=2.0_r8*vonKar*ustrr/wr
 # if defined CRS_FIX
-        dwc(1)=MIN( 0.9_r8*zr, dwc(1) )
+!        dwc(1)=MIN( 0.9_r8*zr, dwc(1) ) !don't limit wbl to zr
 # endif
       ELSE
         dwc(1)=kN
@@ -1676,12 +1691,26 @@
 !
 ! New fwc CRS calculation
 !
-        fwci(i)=Cmu(i)*0.3_r8
-        IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
-          fwci(i)=Cmu(i)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
-        ELSE IF (cukw.gt.100.0_r8) THEN
-          fwci(i)=Cmu(i)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
-        END IF
+
+!        fwci(i)=Cmu(i)*0.3_r8
+!        IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+!          fwci(i)=Cmu(i)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+!        ELSE IF (cukw.gt.100.0_r8) THEN
+!          fwci(i)=Cmu(i)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
+!        END IF
+
+!
+! WIT fwc calculation
+!
+
+      IF (cukw.le.0.01_r8)) THEN
+        fwci(1)=Cmu(1)*EXP(7.02_r8*(0.01_r8)**(-0.078_r8)-8.82_r8)
+      IF ((cukw.gt.0.01_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+        fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+      ELSE IF (cukw.gt.100.0_r8) THEN
+        fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
+      END IF
+
 # else
 !
 ! Original method fwc calculation
@@ -1704,7 +1733,7 @@
         IF (cukw.ge.8.0_r8) THEN
           dwc(i)=2.0_r8*vonKar*ustrr/wr                       ! Eq 36
 # if defined CRS_FIX
-          dwc(i)=MIN( 0.9_r8*zr, dwc(i) )
+!          dwc(i)=MIN( 0.9_r8*zr, dwc(i) )
 # endif
         ELSE
           dwc(i)=kN
