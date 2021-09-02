@@ -578,7 +578,7 @@
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
       
-#ifdef SSW_BBL
+#if defined BBL_MODEL && defined SSW_BBL
       to_add=':FWC'
       cad=LEN_TRIM(to_add)
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
@@ -1198,9 +1198,11 @@
       integer :: WHICHWAY, GDEST, GSRC, TAGT, TAGB, TAGR, TAGL
       integer :: TREQUEST,BREQUEST,RREQUEST,LREQUEST,MSIZE
       integer :: iddep, idwlv, idvlx, idvly, idveg
-      integer :: idruf, idice, idfwc
+      integer :: idruf, idice
       integer, dimension(MPI_STATUS_SIZE,4) :: status
-
+#ifdef SSW_BBL
+      integer :: idfwc
+#endif
       real :: cff
 # if !defined BBL_MODEL
       real :: cff2
@@ -1463,6 +1465,7 @@
 !
 ! Wave friction factor enhanced by currents
 !
+# ifdef SSW_BBL
         CALL AttrVect_exportRAttr(AttrVect_G(ng)%ocn2wav_AV,           &
      &                            "FWC",avdata,gsmsize)
         range(1)= Large
@@ -1483,10 +1486,10 @@
         CALL SWREDUCE(range(1),1,SWREAL,SWMIN)
         CALL SWREDUCE(range(2),1,SWREAL,SWMAX)
         IF (MyRank.eq.0) THEN
-          write(SCREEN,40) 'ROMStoSWAN Min/Max FWC      :      ',    &
+          write(SCREEN,40) 'ROMStoSWAN Min/Max FWC      ():      ',    &
      &                      range(1),range(2)
         END IF
-
+#endif
 #  if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
 !  Vegetation density.

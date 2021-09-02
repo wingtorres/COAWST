@@ -1404,7 +1404,7 @@
           MCMVAR = MCMVAR + 3                                               40.00
           JFRC2  = MCMVAR - 2                                               40.00
           JFRC3  = MCMVAR - 1                                               40.00
-          JFWC    = MCMVAR
+          JFWC   = MCMVAR
           ALLOCATE (M_GENARR_MOD(ng)%FRIC_G(MXG(IGR1)*MYG(IGR1)))           40.31
           FRIC=>M_GENARR_MOD(ng)%FRIC_G
           FRIC=0.0001
@@ -2680,7 +2680,7 @@
           ALOCMP = .TRUE.
         ELSE IF (KEYWIS('M94')) THEN
           IBOT = 6
-          JFWC = MCMVAR + 1
+          JFWC = MCMVAR
           AlOCMP = .TRUE.
         ELSE
           CALL WRNKEY

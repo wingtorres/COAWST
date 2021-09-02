@@ -439,10 +439,12 @@
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
 !
+#ifdef SSW_BBL
       to_add=':FWC'
       cad=LEN_TRIM(to_add)
       write(owstring(cid:cid+cad-1),'(a)') to_add(1:cad)
       cid=cid+cad
+#endif 
 #if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
       to_add=':VEGDENS'
@@ -899,6 +901,7 @@
 !
 !  current-enhanced wave friction factor
 !
+#ifdef SSW_BBL
       ij=0
       DO j=JstrR,JendR
         DO i=IstrR,IendR
@@ -914,6 +917,7 @@
       END DO
       CALL AttrVect_importRAttr (AttrVect_G(ng)%ocn2wav_AV, "FWC",       &
      &                           A, Asize)
+#endif
 #if defined VEGETATION && defined VEG_SWAN_COUPLING
 !
 !  Equivalent Plant density.

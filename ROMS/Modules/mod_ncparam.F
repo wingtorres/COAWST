@@ -432,7 +432,7 @@
         integer  :: id2dRV        ! 2D relative vorticity
         integer  :: id3dPV        ! 3D potential vorticity
         integer  :: id3dRV        ! 3D relative vorticity
-        integer  :: idfwc         ! Wave-enhanced friction factor
+!        integer  :: idfwc         ! Wave-enhanced friction factor
 !
 !  Last used variable ID counter.
 !

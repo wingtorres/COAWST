@@ -993,9 +993,9 @@
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
      &                  bottom(:,:,izwbl))
-!      CALL bc_r2d_tile (ng, tile,                                       &
-!     &                  LBi, UBi, LBj, UBj,                             &
-!     &                  bottom(:,:,ifwc))
+      CALL bc_r2d_tile (ng, tile,                                       &
+     &                  LBi, UBi, LBj, UBj,                             &
+     &                  bottom(:,:,ifwc))
 #if defined BEDLOAD_VANDERA_MADSEN
       CALL bc_r2d_tile (ng, tile,                                       &
      &                  LBi, UBi, LBj, UBj,                             &
@@ -1041,13 +1041,13 @@
      &                    bottom(:,:,ibwav),                            &
      &                    bottom(:,:,irhgt),                            &
      &                    bottom(:,:,irlen))
-      CALL mp_exchange2d (ng, tile, iNLM, 2,                            &
+      CALL mp_exchange2d (ng, tile, iNLM, 3,                            &
      &                    LBi, UBi, LBj, UBj,                           &
      &                    NghostPoints,                                 &
      &                    EWperiodic(ng), NSperiodic(ng),               &
      &                    bottom(:,:,izdef),                            &
      &                    bottom(:,:,izapp),                            &
-	 &                    bottom(:,:,ifwc))                              
+	  &                    bottom(:,:,ifwc))
       CALL mp_exchange2d (ng, tile, iNLM, 4,                            &
      &                    LBi, UBi, LBj, UBj,                           &
      &                    NghostPoints,                                 &

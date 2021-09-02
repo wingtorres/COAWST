@@ -287,9 +287,9 @@
       imaxD    = counter2    ! Maximum inundation depth.
       counter2 = counter2+1
       idnet    = counter2    ! Erosion/deposition
-#if defined SSW_BBL
-      counter2 = counter2+1   ! wave-current friction factor
-	  ifwc = counter2
+#ifdef SSW_BBL
+      counter2 = counter2+1  ! wave-current friction factor
+	   ifwc = counter2
 #endif 
 #if defined COHESIVE_BED || defined SED_BIODIFF || defined MIXED_BED
       counter2 = counter2+1

@@ -29,7 +29,7 @@
      &                 IMATDA  ,KWAVE   ,SPCSIG  ,UBOT    ,UX2     ,      30.72
      &                 UY2     ,IDCMIN  ,IDCMAX  ,IT      ,ITER    ,      41.51
      &                 SWPDIR  ,PLBTFR  ,ISSTOP  ,DISSC1  ,VARFR   ,      41.51 40.67
-     &                 FRCOEF, FWC )
+     &                 FRCOEF  ,FWC )
 !
 !****************************************************************
 !
@@ -387,13 +387,12 @@
           ENDIF
           CFBOT =  UBOT(KCGRD(1)) * FW / (SQRT(2.) * GRAV)
 
-        IF ( IBOT.EQ.6 ) THEN
+        ELSEIF ( IBOT.EQ.6 ) THEN
+!         *** Madsen 1994 model ***
+!         *** f_wc computed in ROMS then passed to SWAN ***
 
-!            *** Madsen 1994 model ***
-!            *** f_wc computed in ROMS then passed to SWAN ***
-            FW = FWC(KCGRD(1))
-        ENDIF
-        CFBOT = UBOT(KCGRD(1))*FW / (SQRT(2.) * GRAV)
+          FW = FWC(KCGRD(1))
+          CFBOT = UBOT(KCGRD(1))*FW / (SQRT(2.) * GRAV)
         
         ELSEIF ( IBOT.EQ.4 ) THEN
 !

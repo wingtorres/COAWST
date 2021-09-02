@@ -1376,6 +1376,20 @@
               DO ng=1,Ngrids
                 Hout(i,ng)=Lbottom(ng)
               END DO
+!#ifdef SSW_BBL
+!            CASE ('Hout(ifwc)')
+!              Npts=load_l(Nval, Cval, Ngrids, Lbottom)
+!              i=idBott(ifwc)
+!              DO ng=1,Ngrids
+!                Hout(i,ng)=Lbottom(ng)
+!              END DO
+!            CASE ('Qout(ifwc)')
+!              Npts=load_l(Nval, Cval, Ngrids, Lbottom)
+!              i=idBott(ifwc)
+!              DO ng=1,Ngrids
+!                Qout(i,ng)=Lbottom(ng)
+!              END DO
+!#endif
 #if defined COHESIVE_BED || defined SED_BIODIFF || defined MIXED_BED
             CASE ('Hout(idoff)')
               Npts=load_l(Nval, Cval, Ngrids, Lbottom)
