@@ -2,6 +2,7 @@
 #undef SGWC
 #define N92_RIPRUF
 #define CRS_FIX
+#undef WIT_FWC
 
       SUBROUTINE bblm (ng, tile)
 !
@@ -369,6 +370,16 @@
 ! Calculate bottom cell thickness
 !
           Zr(i,j)=z_r(i,j,1)-z_w(i,j,0)
+!
+! Find reference height above zo in case zo>zr
+!
+          k = 1
+          cff1 = Zr(i,j)
+          DO WHILE (cff1.lt.ZoBot(i,j))
+             k = k+1
+             cff1 = z_r(i,j,k)-z_w(i,j,0)
+          END DO
+          Zr(i,j) = cff1
 !
 #if defined SSW_LOGINT
 !
@@ -1589,8 +1600,8 @@
       ustrwm=dval
       ustrr=dval
 # ifdef CRS_FIX
-!      kN=MIN(kN,0.9_r8*zr)
-      KN=MIN(kN,0.9_r8*Dstp) !limit by depth not ref height
+      kN=MIN(kN,0.9_r8*zr)
+!      kN=MIN(kN,0.9_r8*Dstp) !limit by depth not ref height
 # endif
       zoa=kN/30.0_r8
       phicwc=phiwc
@@ -1622,25 +1633,30 @@
       Cmu(1)=1.0_r8
 
       cukw=Cmu(1)*ubr/(kN*wr)
-# if defined CRS_FIX
+# if defined CRS_FIX && !defined WIT_FWC
 !
 ! New fwc CRS calculation
 !
 
-!      fwci(1)=Cmu(1)*0.3_r8
-!      IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
-!        fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
-!      ELSE IF (cukw.gt.100.0_r8) THEN
-!        fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
-!      END IF
+      fwci(1)=Cmu(1)*0.3_r8
+      IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+        fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+      ELSE IF (cukw.gt.100.0_r8) THEN
+        fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
+      ELSE IF (cukw.lt.0.010_r8) THEN
+        fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+      END IF
 
+#elif defined WIT_FWC
 !
 ! WIT fwc calculation
 !
 
-      IF (cukw.le.0.01_r8)) THEN
-         fwci(1)=Cmu(1)*EXP(7.02_r8*(0.01_r8)**(-0.078_r8)-8.82_r8)
-      IF ((cukw.gt.0.01_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+!      IF (cukw.le.0.352_r8) THEN
+!        fwci(1)=Cmu(1)*EXP(7.02_r8*(0.352_r8)**(-0.078_r8)-8.82_r8)
+      
+      fwci(i)=Cmu(i)*0.3_r8
+      IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
         fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
       ELSE IF (cukw.gt.100.0_r8) THEN
         fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
@@ -1687,31 +1703,37 @@
         Cmu(i)=SQRT(1.0_r8+                                             &
      &              2.0_r8*rmu(i)*cosphiwc+rmu(i)*rmu(i))     ! Eq 27
         cukw=Cmu(i)*ubr/(kN*wr)
-# ifdef CRS_FIX
+
+# if defined CRS_FIX && !defined WIT_FWC
 !
 ! New fwc CRS calculation
 !
 
-!        fwci(i)=Cmu(i)*0.3_r8
-!        IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
-!          fwci(i)=Cmu(i)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
-!        ELSE IF (cukw.gt.100.0_r8) THEN
-!          fwci(i)=Cmu(i)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
-!        END IF
+        fwci(i)=Cmu(i)*0.3_r8
+        IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+          fwci(i)=Cmu(i)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+        ELSE IF (cukw.gt.100.0_r8) THEN
+          fwci(i)=Cmu(i)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
+        ELSE IF (cukw.lt.0.010_r8) THEN
+          fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
+        END IF
 
+#elif defined WIT_FWC
 !
 ! WIT fwc calculation
 !
-
-      IF (cukw.le.0.01_r8)) THEN
-        fwci(1)=Cmu(1)*EXP(7.02_r8*(0.01_r8)**(-0.078_r8)-8.82_r8)
-      IF ((cukw.gt.0.01_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
+!      IF (cukw.le.0.352_r8) THEN
+!        fwci(1)=Cmu(1)*EXP(7.02_r8*(0.352_r8)**(-0.078_r8)-8.82_r8)
+        
+      fwci(i)=Cmu(i)*0.3_r8
+      IF ((cukw.gt.0.352_r8).and.(cukw.le.100.0_r8)) THEN       ! Eq 32/33
         fwci(1)=Cmu(1)*EXP(7.02_r8*cukw**(-0.078_r8)-8.82_r8)
       ELSE IF (cukw.gt.100.0_r8) THEN
         fwci(1)=Cmu(1)*EXP(5.61_r8*cukw**(-0.109_r8)-7.30_r8)
       END IF
 
 # else
+
 !
 ! Original method fwc calculation
 !
@@ -1733,7 +1755,7 @@
         IF (cukw.ge.8.0_r8) THEN
           dwc(i)=2.0_r8*vonKar*ustrr/wr                       ! Eq 36
 # if defined CRS_FIX
-!          dwc(i)=MIN( 0.9_r8*zr, dwc(i) )
+          dwc(i)=MIN( 0.9_r8*zr, dwc(i) )
 # endif
         ELSE
           dwc(i)=kN
