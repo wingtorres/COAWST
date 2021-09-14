@@ -2679,6 +2679,7 @@
           MCMVAR = MCMVAR+1
           ALOCMP = .TRUE.
         ELSE IF (KEYWIS('M94')) THEN
+          CALL INREAL('KN',PBOT(5),'UNC',0.)
           IBOT = 6
           JFWC = MCMVAR
           AlOCMP = .TRUE.
