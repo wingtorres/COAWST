@@ -303,6 +303,7 @@
       REAL     DSP    ,ETOT   ,EEX    ,EEY   ,EAD
       REAL     S      ,D      ,PHI    ,THETA ,                            41.51
      &         DAST   ,THETAC ,RIPH   ,RIPW                               41.51
+      REAL     cukw
 !
       LOGICAL  VARFR
 !
@@ -318,7 +319,7 @@
      &         UY2(MCGRD)                ,
      &         DISSC1(MDC,MSC,1:MDISP)   ,                                40.67
      &         FRCOEF(MCGRD)             ,                                20.68
-     &         FWC(MCGRD)          
+     &         FWC(MCGRD)
 !
       INTEGER  IDCMIN(MSC)               ,
      &         IDCMAX(MSC)
@@ -388,10 +389,25 @@
           CFBOT =  UBOT(KCGRD(1)) * FW / (SQRT(2.) * GRAV)
 
         ELSEIF ( IBOT.EQ.6 ) THEN
-!         *** Madsen 1994 model ***
+!         *** Madsen 1994 model (M94) ***
 !         *** f_wc computed in ROMS then passed to SWAN ***
-
-          FW = FWC(KCGRD(1))
+!         *** if no ROMS coupling, then use eqn 33+34 assuming C_\mu = 1 ***
+          IF (VARFR) THEN
+            FW = FWC(KCGRD(1))                                               20.68
+          ELSE
+            AKN = PBOT(5)
+            cukw = ABRBOT/AKN
+            IF ( cukw.LT.2E-1 ) THEN
+               FW = EXP(7.02*(0.2)**(-0.078) - 8.82)
+            ELSEIF ( cukw.GT.2E-1 .AND. cukw.LT.10E1) THEN
+               FW = EXP(7.02*(ABRBOT/AKN)**(-0.078) - 8.82)
+            ELSEIF  ( cukw.GT.1E1 .AND. cukw.LT.10E3) THEN
+               FW = EXP(5.61*(ABRBOT/AKN)**(-0.109) - 7.30)
+            ELSEIF ( cukw.GT.10E3 ) THEN
+               FW = EXP(5.61*(10e3)**(-0.109) - 7.30)
+            ENDIF
+          ENDIF
+          
           CFBOT = UBOT(KCGRD(1))*FW / (SQRT(2.) * GRAV)
         
         ELSEIF ( IBOT.EQ.4 ) THEN
